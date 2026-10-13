@@ -2,6 +2,7 @@
 
 [![CI Pipeline](https://github.com/ravishkarathnayaka/rag-security-poisoning-defense-gateway/actions/workflows/ci.yml/badge.svg)](https://github.com/ravishkarathnayaka/rag-security-poisoning-defense-gateway/actions/workflows/ci.yml)
 [![Security Scan](https://github.com/ravishkarathnayaka/rag-security-poisoning-defense-gateway/actions/workflows/security-scan.yml/badge.svg)](https://github.com/ravishkarathnayaka/rag-security-poisoning-defense-gateway/actions/workflows/security-scan.yml)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fravishkarathnayaka%2Frag-security-poisoning-defense-gateway)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
 
@@ -220,6 +221,21 @@ docker compose up -d --build
 ```
 
 Access the Web UI at `http://localhost:8000` and Swagger docs at `http://localhost:8000/docs`.
+
+### Option C: 1-Click Serverless Hosting on Vercel
+
+The portal is preconfigured for zero-friction Vercel deployment:
+- **Global Edge CDN**: The cyber-defense portal in `public/` is served at `/` with 0ms cold-start latency.
+- **Python Serverless Function**: The FastAPI gateway backend runs via `api/index.py` configured with `vercel.json` rewrites.
+- **Dual-Engine Architecture**: Operates with live backend endpoints and provides an instant client-side gateway fallback during preview.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fravishkarathnayaka%2Frag-security-poisoning-defense-gateway)
+
+**Or deploy using the Vercel CLI:**
+```bash
+npm install -g vercel
+vercel
+```
 
 ---
 

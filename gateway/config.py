@@ -52,7 +52,10 @@ class GatewayConfig:
     # ---------------------------------------------------------
     chroma_persist_dir: str = field(
         default_factory=lambda: os.getenv(
-            "CHROMA_PERSIST_DIR", str(Path.cwd() / "chroma_data")
+            "CHROMA_PERSIST_DIR",
+            "/tmp/chroma_data"
+            if (os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"))
+            else str(Path.cwd() / "chroma_data"),
         )
     )
     default_collection: str = "enterprise_knowledge"
