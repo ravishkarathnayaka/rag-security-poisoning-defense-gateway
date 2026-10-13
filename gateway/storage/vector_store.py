@@ -73,17 +73,38 @@ class DeterministicLocalEmbedding:
             vec = [round(x / norm, 6) for x in vec]
         return vec
 
-    def __call__(self, input: List[str] | str) -> List[List[float]]:
-        if isinstance(input, str):
-            return [self._embed_single(input)]
-        return [self._embed_single(t) for t in input]
+    def __call__(self, input: Any = None, *args, **kwargs) -> List[List[float]]:
+        target = input
+        if target is None and args:
+            target = args[0]
+        if target is None and "documents" in kwargs:
+            target = kwargs["documents"]
+        if isinstance(target, str):
+            return [self._embed_single(target)]
+        if isinstance(target, (list, tuple)):
+            return [self._embed_single(t) for t in target]
+        return []
 
     # ChromaDB embedding function protocol compatibility
-    def embed_documents(self, documents: List[str]) -> List[List[float]]:
-        return self(documents)
+    def embed_documents(self, input: Any = None, documents: Any = None, *args, **kwargs) -> List[List[float]]:
+        target = input if input is not None else documents
+        if target is None and args:
+            target = args[0]
+        if isinstance(target, str):
+            return [self._embed_single(target)]
+        if isinstance(target, (list, tuple)):
+            return [self._embed_single(t) for t in target]
+        return []
 
-    def embed_query(self, query: str) -> List[float]:
-        return self._embed_single(query)
+    def embed_query(self, input: Any = None, query: Any = None, *args, **kwargs) -> List[List[float]]:
+        target = input if input is not None else query
+        if target is None and args:
+            target = args[0]
+        if isinstance(target, str):
+            return [self._embed_single(target)]
+        if isinstance(target, (list, tuple)):
+            return [self._embed_single(t) for t in target]
+        return []
 
     def name(self) -> str:
         return "DeterministicLocalEmbedding-384d"
