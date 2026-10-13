@@ -90,6 +90,9 @@ function loadAttackPreset(key, evt) {
   if (clicked) clicked.classList.add("active");
 
   updateInputStats();
+
+  // Instantly run sanitization preview for immediate interactive defense feedback
+  executeSanitizePreview();
 }
 
 // Expose handlers globally for inline onclick attributes
@@ -461,6 +464,7 @@ function initIngestionPortal() {
 function setQuery(text) {
   const input = document.getElementById("rag-query");
   if (input) input.value = text;
+  executeGuardedQuery();
 }
 window.setQuery = setQuery;
 
