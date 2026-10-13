@@ -33,6 +33,7 @@ exclude = ["tests*", "test_data*", "docker*", "public*", "chroma_data*"]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
+pythonpath = ["."]
 addopts = "-v --strict-markers"
 
 [tool.ruff]

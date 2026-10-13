@@ -30,6 +30,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest pytest-cov ruff
+          pip install -e .
 
       - name: Lint with Ruff
         run: |
@@ -41,4 +42,4 @@ jobs:
 
       - name: Run Pytest Test Suite
         run: |
-          pytest tests/ -v --cov=gateway --cov=api --cov-report=term-missing
+          python -m pytest tests/ -v --cov=gateway --cov=api --cov-report=term-missing

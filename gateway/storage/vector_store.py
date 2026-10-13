@@ -54,7 +54,7 @@ class DeterministicLocalEmbedding:
 
         # Feature hashing into dense vector
         for feat in features:
-            h = int(hashlib.md5(feat.encode("utf-8")).hexdigest(), 16)
+            h = int(hashlib.md5(feat.encode("utf-8"), usedforsecurity=False).hexdigest(), 16)  # nosec B324
             idx = h % self.dimension
             # Sign hash for balance
             sign = 1.0 if ((h >> 8) & 1) else -1.0

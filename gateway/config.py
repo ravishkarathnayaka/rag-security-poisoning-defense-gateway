@@ -53,7 +53,7 @@ class GatewayConfig:
     chroma_persist_dir: str = field(
         default_factory=lambda: os.getenv(
             "CHROMA_PERSIST_DIR",
-            "/tmp/chroma_data"
+            "/tmp/chroma_data"  # nosec B108
             if (os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"))
             else str(Path.cwd() / "chroma_data"),
         )
@@ -84,7 +84,7 @@ class GatewayConfig:
     # ---------------------------------------------------------
     # API & Telemetry
     # ---------------------------------------------------------
-    api_host: str = "0.0.0.0"
+    api_host: str = "0.0.0.0"  # nosec B104
     api_port: int = 8000
     telemetry_retention_max: int = 500
 
