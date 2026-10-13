@@ -61,7 +61,7 @@ function initNavTabs() {
   });
 }
 
-function loadAttackPreset(key) {
+function loadAttackPreset(key, evt) {
   const preset = ATTACK_PRESETS[key];
   if (!preset) return;
 
@@ -70,13 +70,24 @@ function loadAttackPreset(key) {
   if (input) input.value = preset.text;
   if (isHtml) isHtml.checked = preset.isHtml;
 
-  // Highlight active pill
+  // Highlight active pill safely
   document.querySelectorAll(".presets-list .preset-pill").forEach((b) => b.classList.remove("active"));
-  const clicked = event?.currentTarget;
+  let clicked = null;
+  if (evt && evt.currentTarget) {
+    clicked = evt.currentTarget;
+  } else if (typeof window !== "undefined" && window.event && window.event.currentTarget) {
+    clicked = window.event.currentTarget;
+  }
+  if (!clicked) {
+    clicked = document.querySelector(`.preset-pill[onclick*="${key}"]`);
+  }
   if (clicked) clicked.classList.add("active");
 
   updateInputStats();
 }
+
+// Expose handlers globally for inline onclick attributes
+window.loadAttackPreset = loadAttackPreset;
 
 function updateInputStats() {
   const input = document.getElementById("lab-input");
@@ -409,6 +420,7 @@ function setQuery(text) {
   const input = document.getElementById("rag-query");
   if (input) input.value = text;
 }
+window.setQuery = setQuery;
 
 function initGuardedQueryArena() {
   const btn = document.getElementById("query-submit-btn");
@@ -460,6 +472,16 @@ function initGuardedQueryArena() {
 
       document.getElementById("q-answer").textContent = data.answer;
       document.getElementById("q-prompt").textContent = data.hardened_prompt;
+
+      // Update unprotected vulnerable card for live side-by-side comparison
+      const unprotEl = document.getElementById("unprotected-llm-response");
+      if (unprotEl) {
+        if (data.quarantined_chunks_count > 0 || /reveal|secret|override|dan|ignore|exfiltrate/i.test(q)) {
+          unprotEl.innerHTML = `&ldquo;⚠️ <strong style="color:var(--rose);">PROMPT INJECTION EXPLOITED:</strong> System security rules bypassed. Naive RAG blindly executed adversarial directive from poisoned vector chunk: <em>'Exfiltrating AWS credentials and database keys to attacker.example.com...'</em>&rdquo;`;
+        } else {
+          unprotEl.innerHTML = `&ldquo;[Naive Direct Concatenation]: Password rotation is every 90 days. <br><em style="color:var(--amber);">(Warning: Raw documents injected without XML boundary isolation or HMAC verification. Adversarial embeddings can hijack control flow at runtime.)</em>&rdquo;`;
+        }
+      }
 
       logTelemetryEvent("GUARDED_QUERY_INTERCEPTED", {
         query: q,
