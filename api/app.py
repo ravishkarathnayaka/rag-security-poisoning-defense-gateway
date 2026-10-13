@@ -102,12 +102,18 @@ def create_app() -> FastAPI:
     if public_dir.exists():
         app.mount("/static", StaticFiles(directory=str(public_dir)), name="static")
 
+    no_cache_headers = {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+    }
+
     @app.get("/", include_in_schema=False)
     async def serve_index():
         """Serves the security gateway dashboard interface."""
         index_file = public_dir / "index.html"
         if index_file.exists():
-            return FileResponse(str(index_file))
+            return FileResponse(str(index_file), headers=no_cache_headers)
         return {
             "message": "RAG Security Defense Gateway API is running.",
             "docs": "/docs",
@@ -117,15 +123,15 @@ def create_app() -> FastAPI:
     async def serve_css():
         css_file = public_dir / "style.css"
         if css_file.exists():
-            return FileResponse(str(css_file), media_type="text/css")
-        return FileResponse(str(Path(__file__).parent / "static" / "style.css"), media_type="text/css")
+            return FileResponse(str(css_file), media_type="text/css", headers=no_cache_headers)
+        return FileResponse(str(Path(__file__).parent / "static" / "style.css"), media_type="text/css", headers=no_cache_headers)
 
     @app.get("/app.js", include_in_schema=False)
     async def serve_js():
         js_file = public_dir / "app.js"
         if js_file.exists():
-            return FileResponse(str(js_file), media_type="application/javascript")
-        return FileResponse(str(Path(__file__).parent / "static" / "app.js"), media_type="application/javascript")
+            return FileResponse(str(js_file), media_type="application/javascript", headers=no_cache_headers)
+        return FileResponse(str(Path(__file__).parent / "static" / "app.js"), media_type="application/javascript", headers=no_cache_headers)
 
     @app.get("/api/v1/health")
     async def health_check():
