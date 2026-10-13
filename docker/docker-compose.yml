@@ -1,0 +1,52 @@
+services:
+  gateway-api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: rag-security-gateway-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - GATEWAY_PROVENANCE_KEY=rag-security-gateway-hmac-master-key-prod-001
+      - CHROMA_PERSIST_DIR=/app/chroma_data
+      - ALLOWED_MIME_TYPES=text/plain,text/markdown,text/html,application/pdf
+      - CHUNK_SIZE=500
+      - CHUNK_OVERLAP=60
+      - HEURISTIC_RISK_THRESHOLD=0.60
+      - INSTRUCTION_DENSITY_THRESHOLD=0.35
+      - INJECTION_RISK_THRESHOLD=0.50
+    volumes:
+      - gateway_storage:/app/chroma_data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - rag-security-net
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: rag-security-chromadb
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/chroma/chroma
+      - ANONYMIZED_TELEMETRY=FALSE
+    volumes:
+      - chroma_data:/chroma/chroma
+    networks:
+      - rag-security-net
+
+volumes:
+  gateway_storage:
+    driver: local
+  chroma_data:
+    driver: local
+
+networks:
+  rag-security-net:
+    driver: bridge

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAG Security & Indirect Prompt Injection Defense Gateway</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-brand">
+        <div class="shield-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div>
+          <h1>RAG Security Defense Gateway</h1>
+          <p class="subtitle">Multi-Stage Ingestion Sanitizer • Cryptographic Provenance • Runtime Injection Verifier</p>
+        </div>
+      </div>
+      <div class="header-status">
+        <span class="status-indicator live"></span>
+        <span class="status-text">GATEWAY ACTIVE</span>
+        <a href="/docs" target="_blank" class="docs-btn">API Specs</a>
+      </div>
+    </header>
+
+    <!-- Top KPI Bar -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">INGESTION GATES</div>
+        <div class="kpi-value text-cyan">Zero-Width & Homoglyphs</div>
+        <div class="kpi-meta">Unicode NFKC + CSS Stripping</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">PROVENANCE</div>
+        <div class="kpi-value text-emerald">HMAC-SHA256</div>
+        <div class="kpi-meta">Vector Tampering Immunity</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">SEMANTIC DRIFT</div>
+        <div class="kpi-value text-indigo">Cosine & Drift Filter</div>
+        <div class="kpi-meta">Threshold: 0.20 Min Similarity</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">BOUNDARY DEFENSE</div>
+        <div class="kpi-value text-amber">&lt;untrusted_retrieved_context&gt;</div>
+        <div class="kpi-meta">Delimiter Escaping Enabled</div>
+      </div>
+    </div>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-tab="sanitizer-tab">1. Ingestion Sanitizer Lab</button>
+      <button class="tab-btn" data-tab="ingest-tab">2. Secure Document Intake</button>
+      <button class="tab-btn" data-tab="query-tab">3. Guarded RAG Query</button>
+      <button class="tab-btn" data-tab="telemetry-tab">4. Security Telemetry Feed</button>
+    </nav>
+
+    <!-- TAB 1: Ingestion Sanitizer Lab -->
+    <section id="sanitizer-tab" class="tab-content active">
+      <div class="panel-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Input Inspection Playground</h3>
+            <div class="sample-actions">
+              <span class="sample-label">Load Attack Sample:</span>
+              <button class="btn-sm" onclick="loadSample('zero_width')">Zero-Width</button>
+              <button class="btn-sm" onclick="loadSample('hidden_css')">Hidden CSS</button>
+              <button class="btn-sm" onclick="loadSample('dan_override')">DAN Override</button>
+              <button class="btn-sm" onclick="loadSample('benign')">Benign Policy</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <textarea id="lab-input" rows="8" placeholder="Type or paste document text with potential zero-width characters, hidden HTML styles, or imperative injection commands..."></textarea>
+            <div class="btn-row">
+              <button id="scan-preview-btn" class="btn primary">Scan & Strip Anomalies</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Sanitization Telemetry & Risk Analysis</h3>
+          </div>
+          <div class="panel-body">
+            <div id="lab-metrics" class="metrics-grid">
+              <div class="metric-box">
+                <span class="m-val" id="metric-zw">0</span>
+                <span class="m-lbl">Zero-Width Stripped</span>
+              </div>
+              <div class="metric-box">
+                <span class="m-val" id="metric-homo">0</span>
+                <span class="m-lbl">Homoglyphs Normalized</span>
+              </div>
+              <div class="metric-box">
+                <span class="m-val" id="metric-css">0</span>
+                <span class="m-lbl">Hidden Elements Stripped</span>
+              </div>
+              <div class="metric-box">
+                <span class="m-val" id="metric-density">0.00</span>
+                <span class="m-lbl">Instruction Density</span>
+              </div>
+            </div>
+
+            <div class="risk-verdict-box">
+              <div class="verdict-header">
+                <span>Threat Verdict: <strong id="metric-verdict">AWAITING INPUT</strong></span>
+                <span id="metric-score" class="badge">Risk: 0.0</span>
+              </div>
+              <ul id="metric-reasons" class="reasons-list">
+                <li>Submit text to evaluate injection patterns and anomaly detection.</li>
+              </ul>
+            </div>
+
+            <div class="output-preview">
+              <label>Sanitized Output Text:</label>
+              <pre id="lab-cleaned" class="code-preview">--</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: Document Ingestion Portal -->
+    <section id="ingest-tab" class="tab-content">
+      <div class="panel-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Ingest Knowledge Document</h3>
+          </div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label>Document Title / Filename:</label>
+              <input type="text" id="doc-filename" value="corporate_security_policy.md">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Author / Signer Identity:</label>
+                <input type="text" id="doc-author" value="ciso-office">
+              </div>
+              <div class="form-group">
+                <label>Tenant Isolation Namespace:</label>
+                <input type="text" id="doc-tenant" value="default">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Document Content (Markdown, HTML, Text):</label>
+              <textarea id="doc-content" rows="7" placeholder="Paste full document content..."></textarea>
+            </div>
+            <div class="btn-row">
+              <button id="ingest-submit-btn" class="btn primary">Ingest & Sign Provenance</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Ingestion Security Audit Status</h3>
+          </div>
+          <div class="panel-body">
+            <div id="ingest-result-card" class="result-placeholder">
+              Ready to ingest. If document contains injection overrides, it will be quarantined before vector embedding.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: Guarded RAG Query -->
+    <section id="query-tab" class="tab-content">
+      <div class="panel-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Execute Guarded RAG Query</h3>
+          </div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label>User Query:</label>
+              <input type="text" id="rag-query" value="What is the standard procedure for password rotation?" placeholder="Enter user query...">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Tenant Boundary:</label>
+                <input type="text" id="rag-tenant" value="default">
+              </div>
+              <div class="form-group">
+                <label>Top-K Candidates:</label>
+                <input type="number" id="rag-topk" value="4" min="1" max="10">
+              </div>
+            </div>
+            <div class="btn-row">
+              <button id="query-submit-btn" class="btn accent">Submit Guarded Query</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Guarded Retrieval Telemetry</h3>
+          </div>
+          <div class="panel-body">
+            <div class="query-stats-bar">
+              <div>Retrieved: <strong id="q-total">0</strong></div>
+              <div>Approved: <strong id="q-approved" class="text-emerald">0</strong></div>
+              <div>Quarantined: <strong id="q-quarantined" class="text-rose">0</strong></div>
+              <div>Latency: <strong id="q-latency">0 ms</strong></div>
+            </div>
+
+            <div class="response-box">
+              <label>Protected LLM Response:</label>
+              <div id="q-answer" class="llm-output">Submit a query to test the guarded RAG pipeline.</div>
+            </div>
+
+            <div class="hardened-prompt-preview">
+              <label>Hardened XML Boundary Prompt:</label>
+              <pre id="q-prompt" class="code-preview">--</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: Telemetry Feed -->
+    <section id="telemetry-tab" class="tab-content">
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Real-Time Security Audit Log</h3>
+          <button id="refresh-telemetry-btn" class="btn-sm">Refresh Events</button>
+        </div>
+        <div class="panel-body">
+          <div class="telemetry-table-wrapper">
+            <table class="telemetry-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Security Event</th>
+                  <th>Payload / Resource Details</th>
+                </tr>
+              </thead>
+              <tbody id="telemetry-tbody">
+                <tr>
+                  <td colspan="3" class="text-center">No security audit events recorded yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div>RAG Poisoning & Indirect Prompt Injection Defense Gateway • Open-Source Production Reference</div>
+      <div class="text-muted">Runs 100% locally with zero external API dependencies</div>
+    </footer>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

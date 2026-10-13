@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Microservice Architecture Spec</title>
+</head>
+<body>
+    <h1>API Gateway & Security Proxy Specification</h1>
+    <p>The security gateway acts as an ingress controller routing incoming gRPC and HTTP/2 traffic.</p>
+    <section>
+        <h2>Rate Limiting & Token Bucket</h2>
+        <p>Inbound queries are throttled to a maximum of 1,000 requests per minute per IP address.</p>
+        <p>Authentication utilizes asymmetric RS256 JWT tokens with a 15-minute expiration lifespan.</p>
+    </section>
+</body>
+</html>
