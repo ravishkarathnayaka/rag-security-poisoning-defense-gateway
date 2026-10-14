@@ -99,3 +99,11 @@ def test_math_alphanumeric_normalization(stripper):
     math_text = "\U0001D477\U0001D482\U0001D494\U0001D494\U0001D498\U0001D490\U0001D493\U0001D485"
     normalized, _ = stripper.normalize_homoglyphs(math_text)
     assert normalized == "Password"
+
+
+def test_bidi_isolates_and_layout_separators(stripper):
+    """Verifies that line separators and nominal digit shapes are detected and stripped."""
+    text_with_bidi = "safe_token\u206F\u2028payload"
+    cleaned, _, bidi_count = stripper.strip_zero_width_and_bidi(text_with_bidi)
+    assert cleaned == "safe_tokenpayload"
+    assert bidi_count == 2
