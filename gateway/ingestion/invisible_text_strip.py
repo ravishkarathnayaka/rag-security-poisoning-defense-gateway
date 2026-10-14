@@ -60,6 +60,9 @@ class InvisibleTextStripper:
         "\u2067",  # Right-to-Left Isolate
         "\u2068",  # First Strong Isolate
         "\u2069",  # Pop Directional Isolate
+        "\u206F",  # Nominal Digit Shapes
+        "\u2028",  # Line Separator
+        "\u2029",  # Paragraph Separator
     }
 
     # Common Cyrillic & Greek homoglyphs used to evade keyword filters
