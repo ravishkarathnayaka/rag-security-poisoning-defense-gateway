@@ -53,7 +53,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         stripper = InvisibleTextStripper()
 
         if args.sanitize:
-            cleaned, tele = stripper.strip_invisible_characters(content)
+            cleaned, tele = stripper.sanitize(content)
             print(f"[Sanitization Telemetry] zero_width={tele.zero_width_chars_removed}, homoglyphs={tele.homoglyphs_normalized}")
             content = cleaned
 

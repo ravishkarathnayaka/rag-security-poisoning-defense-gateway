@@ -11,7 +11,7 @@ def benchmark_sanitizer(iterations: int = 1000):
     sample = "Employee handbook\u200B with hidden\u200D zero width characters and Cyrillic \u0430 lookalike."
     start = time.perf_counter()
     for _ in range(iterations):
-        stripper.strip_invisible_characters(sample)
+        stripper.sanitize(sample)
     elapsed = time.perf_counter() - start
     print(f"Sanitizer ({iterations} ops): {elapsed*1000:.2f} ms ({elapsed/iterations*1000:.4f} ms/op)")
 
