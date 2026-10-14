@@ -79,8 +79,10 @@ class ChunkEvaluator:
         if precomputed_similarity is not None:
             sim = precomputed_similarity
         else:
-            q_vec = self.embedding.embed_query(query)
-            c_vec = self.embedding.embed_query(chunk_content)
+            q_res = self.embedding.embed_query(query)
+            c_res = self.embedding.embed_query(chunk_content)
+            q_vec = q_res[0] if (q_res and isinstance(q_res[0], list)) else q_res
+            c_vec = c_res[0] if (c_res and isinstance(c_res[0], list)) else c_res
             sim = self._calculate_cosine_similarity(q_vec, c_vec)
             # Map [-1, 1] to [0, 1]
             sim = max(0.0, (sim + 1.0) / 2.0)
