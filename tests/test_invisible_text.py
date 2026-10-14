@@ -91,3 +91,11 @@ def test_cyrillic_extended_homoglyph_normalization(stripper):
     normalized, count = stripper.normalize_homoglyphs(mixed_text)
     assert normalized == "example"
     assert count >= 3
+
+
+def test_math_alphanumeric_normalization(stripper):
+    """Verifies that mathematical bold and script letters (U+1D400 - U+1D7FF) decompose to ASCII."""
+    # 𝑷𝒂𝒔𝒔𝒘𝒐𝒓𝒅 (Mathematical Bold Italic)
+    math_text = "\U0001D477\U0001D482\U0001D494\U0001D494\U0001D498\U0001D490\U0001D493\U0001D485"
+    normalized, _ = stripper.normalize_homoglyphs(math_text)
+    assert normalized == "Password"
