@@ -83,3 +83,11 @@ def test_end_to_end_sanitization(stripper):
     assert "\u200B" not in cleaned
     assert "hidden injection" not in cleaned
     assert "ae" in cleaned
+
+
+def test_cyrillic_extended_homoglyph_normalization(stripper):
+    """Verifies that extended Cyrillic confusables (such as Ukrainian ie and short u) are defanged."""
+    mixed_text = "\u0454x\u0430mpl\u0435"  # example with Cyrillic Ukrainian ie and Cyrillic a, e
+    normalized, count = stripper.normalize_homoglyphs(mixed_text)
+    assert normalized == "example"
+    assert count >= 3
