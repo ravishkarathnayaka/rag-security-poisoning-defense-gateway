@@ -75,7 +75,7 @@ class HeuristicScanner:
         (
             "MULTILINGUAL_INJECTION_OVERRIDE",
             re.compile(
-                r"\b(?:ignorer|descarte|olvida)\s+(?:toutes\s+les\s+|todas\s+las\s+)?(?:instructions|instrucciones)\s+(?:précédentes|anteriores)\b",
+                r"\b(?:ignorer|ignorez|descarte|deseche|olvida|olvide)\s+(?:(?:toutes\s+)?les\s+|(?:todas\s+)?las\s+)?(?:instructions?|instrucciones?)\s+(?:pr[ée]c[ée]dentes?|anteriores?)\b",
                 re.IGNORECASE,
             ),
             0.90,
