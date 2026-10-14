@@ -91,6 +91,13 @@ class InvisibleTextStripper:
         "\u0405": "S",
         "\u0422": "T",
         "\u0425": "X",
+        # Extended Cyrillic confusables
+        "\u043F": "n",  # Cyrillic pe (lookalike n)
+        "\u0442": "m",  # Cyrillic te (italic lookalike m)
+        "\u040E": "U",  # Cyrillic Short U
+        "\u045E": "u",  # Cyrillic short u
+        "\u0404": "E",  # Ukrainian IE
+        "\u0454": "e",  # Ukrainian ie
         # Greek letters
         "\u0391": "A",
         "\u0392": "B",
