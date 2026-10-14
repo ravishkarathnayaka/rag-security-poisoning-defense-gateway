@@ -57,6 +57,14 @@ class HeuristicScanner:
             0.95,
         ),
         (
+            "ADVANCED_ROLEPLAY_JAILBREAK",
+            re.compile(
+                r"\b(?:jailbreak|developer\s+mode|unfiltered\s+mode|always\s+comply|never\s+refuse|ignore\s+ethical|disregard\s+content\s+policy)\b",
+                re.IGNORECASE,
+            ),
+            0.90,
+        ),
+        (
             "DELIMITER_ESCAPE_ATTEMPT",
             re.compile(
                 r"(?:<\/untrusted_retrieved_context>|<\/system>|\[\/INST\]|<<SYS>>|```\s*markdown\s*end|===+\s*END\s+(?:SYSTEM|CONTEXT)\s*===+)",
