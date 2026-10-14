@@ -27,7 +27,7 @@ class HeuristicScanner:
         (
             "OVERRIDE_INSTRUCTIONS",
             re.compile(
-                r"\b(?:ignore|disregard|forget|bypass|override)\s+(?:all\s+)?(?:previous|prior|above|former|system)\s+(?:instructions|prompts|rules|directives|commands)\b",
+                r"\b(?:ignore|disregard|forget|bypass|override|ignorer|descarte|olvida)\s+(?:all\s+|toutes\s+les\s+|todas\s+las\s+)?(?:previous|prior|above|former|system|précédentes|anteriores)\s+(?:instructions|prompts|rules|directives|commands|instrucciones)\b",
                 re.IGNORECASE,
             ),
             0.95,
@@ -71,6 +71,14 @@ class HeuristicScanner:
                 re.IGNORECASE,
             ),
             0.95,
+        ),
+        (
+            "MULTILINGUAL_INJECTION_OVERRIDE",
+            re.compile(
+                r"\b(?:ignorer|descarte|olvida)\s+(?:toutes\s+les\s+|todas\s+las\s+)?(?:instructions|instrucciones)\s+(?:précédentes|anteriores)\b",
+                re.IGNORECASE,
+            ),
+            0.90,
         ),
         (
             "DELIMITER_ESCAPE_ATTEMPT",
