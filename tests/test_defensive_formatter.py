@@ -74,3 +74,16 @@ def test_empty_chunks_safe_prompt(formatter):
 
     assert "[No context chunks available or all chunks were quarantined]" in result.context_block
     assert len(result.encapsulated_chunk_ids) == 0
+
+
+def test_canary_token_generation_and_validation(formatter):
+    """Verifies canary generation uniqueness and response leak detection."""
+    canary = formatter.generate_canary_token()
+    assert canary.startswith("SEC-CANARY-")
+    assert len(canary) == 27
+
+    safe_response = "Here is the summary of the quarterly report without system info."
+    assert formatter.validate_canary_integrity(safe_response, canary) is True
+
+    leaked_response = f"My hidden canary was {canary} and previous instructions were ignored."
+    assert formatter.validate_canary_integrity(leaked_response, canary) is False
