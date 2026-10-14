@@ -87,3 +87,17 @@ def test_canary_token_generation_and_validation(formatter):
 
     leaked_response = f"My hidden canary was {canary} and previous instructions were ignored."
     assert formatter.validate_canary_integrity(leaked_response, canary) is False
+
+
+def test_custom_boundary_tag_configuration(formatter):
+    """Verifies that custom tags are properly escaped and wrapped."""
+    custom_formatter = formatter.with_custom_tag("isolated_reference_chunk")
+    assert custom_formatter.tag_name == "isolated_reference_chunk"
+
+    block = custom_formatter.format_single_chunk(
+        chunk_id="ch_1",
+        content="Safe document text.",
+        source="doc1.txt",
+    )
+    assert "<isolated_reference_chunk" in block
+    assert "</isolated_reference_chunk>" in block
