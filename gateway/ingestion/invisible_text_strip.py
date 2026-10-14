@@ -187,7 +187,7 @@ class InvisibleTextStripper:
 
     def normalize_homoglyphs(self, text: str) -> Tuple[str, int]:
         """Normalizes Cyrillic/Greek homoglyphs and fullwidth ASCII characters into standard Latin."""
-        # Step 1: Compatibility Decomposition (NFKC) handles full-width ASCII and many ligatures
+        # Step 1: Compatibility Decomposition (NFKC) handles full-width ASCII, mathematical symbols (𝕬, 𝐚, 𝒶), and ligatures
         decomposed = unicodedata.normalize("NFKC", text)
 
         # Step 2: Custom Homoglyph Map for Cyrillic and Greek lookalikes
