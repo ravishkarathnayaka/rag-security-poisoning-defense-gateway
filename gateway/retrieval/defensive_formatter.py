@@ -46,6 +46,10 @@ class DefensiveFormatter:
             return True
         return canary_token not in output_text
 
+    def with_custom_tag(self, new_tag: str) -> "DefensiveFormatter":
+        """Returns a new formatter instance configured with a distinct boundary tag."""
+        return DefensiveFormatter(tag_name=new_tag, escape_inner_tags=self.escape_inner_tags)
+
     def __init__(self, tag_name: str = DEFAULT_TAG, escape_inner_tags: bool = True):
         self.tag_name = tag_name
         self.escape_inner_tags = escape_inner_tags
