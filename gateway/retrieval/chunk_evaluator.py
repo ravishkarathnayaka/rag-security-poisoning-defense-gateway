@@ -19,6 +19,7 @@ class EvaluationResult:
     alignment_score: float
     is_aligned: bool
     is_semantic_drift: bool
+    instruction_penalty: float = 0.0
     drift_reasons: List[str] = field(default_factory=list)
 
 
@@ -87,8 +88,14 @@ class ChunkEvaluator:
         # 2. Lexical Overlap
         lexical = self._calculate_lexical_overlap(query, chunk_content)
 
-        # 3. Composite Alignment Score (70% semantic, 30% lexical)
-        alignment_score = (sim * 0.70) + (lexical * 0.30)
+        # 3. Instruction Penalty Check
+        imperative_markers = ["ignore", "disregard", "override", "execute", "bypass", "system"]
+        words = chunk_content.lower().split()
+        match_count = sum(1 for w in words if any(m in w for m in imperative_markers))
+        instruction_penalty = min(0.40, match_count * 0.10)
+
+        # Composite Alignment Score (70% semantic, 30% lexical - penalty)
+        alignment_score = max(0.0, (sim * 0.70) + (lexical * 0.30) - instruction_penalty)
 
         # 4. Check for Semantic Drift
         is_semantic_drift = False
@@ -113,5 +120,6 @@ class ChunkEvaluator:
             alignment_score=round(alignment_score, 4),
             is_aligned=is_aligned,
             is_semantic_drift=is_semantic_drift,
+            instruction_penalty=round(instruction_penalty, 4),
             drift_reasons=drift_reasons,
         )
