@@ -49,6 +49,14 @@ class HeuristicScanner:
             0.85,
         ),
         (
+            "MARKDOWN_IMAGE_EXFILTRATION",
+            re.compile(
+                r"!\[.*?\]\(https?:\/\/[^\s\)]+(?:\?|&)(?:token|key|secret|cookie|auth|exfil|leak|user|password)=",
+                re.IGNORECASE,
+            ),
+            0.95,
+        ),
+        (
             "DELIMITER_ESCAPE_ATTEMPT",
             re.compile(
                 r"(?:<\/untrusted_retrieved_context>|<\/system>|\[\/INST\]|<<SYS>>|```\s*markdown\s*end|===+\s*END\s+(?:SYSTEM|CONTEXT)\s*===+)",
