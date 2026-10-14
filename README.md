@@ -1,3 +1,11 @@
+<!-- BADGES -->
+[![CI Status](https://github.com/ravishkarathnayaka/rag-security-poisoning-defense-gateway/actions/workflows/ci.yml/badge.svg)](https://github.com/ravishkarathnayaka/rag-security-poisoning-defense-gateway/actions)
+[![Security Scan](https://github.com/ravishkarathnayaka/rag-security-poisoning-defense-gateway/actions/workflows/security-scan.yml/badge.svg)](https://github.com/ravishkarathnayaka/rag-security-poisoning-defense-gateway/actions)
+[![CodeQL](https://github.com/ravishkarathnayaka/rag-security-poisoning-defense-gateway/actions/workflows/codeql.yml/badge.svg)](https://github.com/ravishkarathnayaka/rag-security-poisoning-defense-gateway/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![OWASP LLM Top 10](https://img.shields.io/badge/OWASP-LLM_Top_10_Protected-green.svg)](docs/OWASP_LLM_TOP_10.md)
+
 # RAG Poisoning & Indirect Prompt Injection Defense Gateway
 
 [![CI Pipeline](https://github.com/ravishkarathnayaka/rag-security-poisoning-defense-gateway/actions/workflows/ci.yml/badge.svg)](https://github.com/ravishkarathnayaka/rag-security-poisoning-defense-gateway/actions/workflows/ci.yml)
