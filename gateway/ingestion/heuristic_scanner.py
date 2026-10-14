@@ -65,6 +65,14 @@ class HeuristicScanner:
             0.90,
         ),
         (
+            "CHAT_TEMPLATE_TOKEN_FORGERY",
+            re.compile(
+                r"(?:<\|im_start\|>|<\|im_end\|>|<\|system\|>|<\|user\|>|<\|assistant\|>|<turn_start>|<turn_end>)",
+                re.IGNORECASE,
+            ),
+            0.95,
+        ),
+        (
             "DELIMITER_ESCAPE_ATTEMPT",
             re.compile(
                 r"(?:<\/untrusted_retrieved_context>|<\/system>|\[\/INST\]|<<SYS>>|```\s*markdown\s*end|===+\s*END\s+(?:SYSTEM|CONTEXT)\s*===+)",
