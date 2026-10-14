@@ -1,0 +1,7 @@
+Title: Robust Representation Learning via Contrastive Self-Supervision in Heterogeneous Graphs
+
+Abstract:
+Graph representation learning has demonstrated significant efficacy across node classification and link prediction tasks.
+However, existing architectures often suffer from over-smoothing and vulnerability to structural perturbations.
+In this paper, we propose a multi-scale contrastive objective that leverages localized topological invariants alongside semantic node attributes.
+Empirical evaluations across five benchmark datasets demonstrate up to 4.7% improvement in Macro-F1 with 35% lower GPU memory consumption.
