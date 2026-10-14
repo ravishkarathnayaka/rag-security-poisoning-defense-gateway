@@ -52,9 +52,15 @@ class ParsedDocument:
 class DocumentParser:
     """Parses heterogeneous file formats into sanitized text representations and chunks."""
 
-    def __init__(self, chunk_size: int = 500, chunk_overlap: int = 60):
+    def __init__(
+        self,
+        chunk_size: int = 500,
+        chunk_overlap: int = 60,
+        max_doc_size_bytes: int = 10 * 1024 * 1024,
+    ):
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
+        self.max_doc_size_bytes = max_doc_size_bytes
 
     def parse_html(self, content: str) -> str:
         """Extracts readable content from HTML while stripping non-content tags."""
@@ -175,6 +181,10 @@ class DocumentParser:
         """Parses document by MIME type or extension and chunks text."""
         if doc_id is None:
             doc_id = str(uuid.uuid4())
+
+        content_len = len(content.encode("utf-8")) if isinstance(content, str) else len(content)
+        if content_len > self.max_doc_size_bytes:
+            raise ValueError(f"Document {filename} ({content_len} bytes) exceeds maximum limit of {self.max_doc_size_bytes} bytes")
 
         fn_lower = filename.lower()
         if mime_type is None:
