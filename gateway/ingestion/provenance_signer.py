@@ -36,8 +36,13 @@ class ProvenanceSigner:
 
     SANITIZER_VERSION = "1.0.0-defensive-gateway"
 
-    def __init__(self, secret_key: str = "rag-security-gateway-hmac-master-key-prod-001"):
+    def __init__(
+        self,
+        secret_key: str = "rag-security-gateway-hmac-master-key-prod-001",
+        previous_keys: Optional[List[str]] = None,
+    ):
         self.secret_key = secret_key.encode("utf-8")
+        self.previous_keys = [k.encode("utf-8") for k in (previous_keys or [])]
 
     def compute_sha256(self, content: str) -> str:
         """Computes deterministic SHA-256 hex digest of string content."""
@@ -133,5 +138,13 @@ class ProvenanceSigner:
             ingested_at=float(metadata["ingested_at"]),
         )
         expected_sig = hmac.new(self.secret_key, payload, hashlib.sha256).hexdigest()
+        if hmac.compare_digest(expected_sig, str(metadata["signature"])):
+            return True
 
-        return hmac.compare_digest(expected_sig, str(metadata["signature"]))
+        # Check previous rotated keys if primary validation failed
+        for old_k in self.previous_keys:
+            candidate_sig = hmac.new(old_k, payload, hashlib.sha256).hexdigest()
+            if hmac.compare_digest(candidate_sig, str(metadata["signature"])):
+                return True
+
+        return False
