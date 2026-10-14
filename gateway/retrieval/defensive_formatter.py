@@ -39,6 +39,13 @@ class DefensiveFormatter:
         import secrets
         return f"{prefix}-{secrets.token_hex(8).upper()}"
 
+    @staticmethod
+    def validate_canary_integrity(output_text: str, canary_token: str) -> bool:
+        """Returns True if the output text does NOT leak or expose the canary token."""
+        if not canary_token:
+            return True
+        return canary_token not in output_text
+
     def __init__(self, tag_name: str = DEFAULT_TAG, escape_inner_tags: bool = True):
         self.tag_name = tag_name
         self.escape_inner_tags = escape_inner_tags
