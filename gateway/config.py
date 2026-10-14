@@ -12,6 +12,28 @@ from typing import List
 class GatewayConfig:
     """Enterprise security thresholds, model parameters, and gateway configuration."""
 
+    def validate(self) -> None:
+        """Validates configuration bounds to ensure defensive integrity."""
+        if not (0.0 <= self.heuristic_risk_threshold <= 1.0):
+            raise ValueError(f"heuristic_risk_threshold must be in [0.0, 1.0], got {self.heuristic_risk_threshold}")
+        if not (0.0 <= self.instruction_density_threshold <= 1.0):
+            raise ValueError(f"instruction_density_threshold must be in [0.0, 1.0], got {self.instruction_density_threshold}")
+        if not (0.0 <= self.injection_risk_threshold <= 1.0):
+            raise ValueError(f"injection_risk_threshold must be in [0.0, 1.0], got {self.injection_risk_threshold}")
+        if self.chunk_overlap >= self.chunk_size:
+            raise ValueError(f"chunk_overlap ({self.chunk_overlap}) must be strictly less than chunk_size ({self.chunk_size})")
+
+    @classmethod
+    def from_env(cls) -> "GatewayConfig":
+        """Builds configuration with environment variable overrides."""
+        cfg = cls()
+        if "GATEWAY_RISK_THRESHOLD" in os.environ:
+            cfg.heuristic_risk_threshold = float(os.environ["GATEWAY_RISK_THRESHOLD"])
+        if "GATEWAY_CHUNK_SIZE" in os.environ:
+            cfg.chunk_size = int(os.environ["GATEWAY_CHUNK_SIZE"])
+        cfg.validate()
+        return cfg
+
     # ---------------------------------------------------------
     # Ingestion Constraints & Sanitization Thresholds
     # ---------------------------------------------------------
